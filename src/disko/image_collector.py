@@ -2,13 +2,11 @@ from datetime import datetime
 from kubernetes import client, config
 from src.disko.sqlite import SQLiteCRUD
 
+# Class to collect images from the Kubernetes cluster
 class ImageCollector:
     def __init__(self):
         self.count = 0
         self.dbfilename = "image_data.db"
-
-        # Load the cluster configuration
-        config.load_kube_config()
 
         # Create a connection to the SQLite database
         # self.conn = sqlite3.connect("image_data.db")
@@ -17,13 +15,19 @@ class ImageCollector:
         
         self.crud = SQLiteCRUD(self.dbfilename)
         self.crud.create_table("images", ["image_name TEXT", "timestamp TIMESTAMP"], "image_name, timestamp")
+        self.crud.create_table("registries", ["registry_name TEXT", "number_of_images INTEGER", "percentage TEXT"], "registry_name, number_of_images, percentage")
+        self.crud.create_table("clusters", ["cluster TEXT"], "cluster")
 
+    def collect_images(self, cluster):
+        # Load the cluster configuration
+        config.load_kube_config(context=cluster)
         # Create the Kubernetes API client
-        self.v1 = client.CoreV1Api()
+        v1 = client.CoreV1Api()
 
-    def collect_images(self):
+        print(f"Collecting images from the {cluster} cluster...")
+
         # Get the list of namespaces
-        namespaces = [ns.metadata.name for ns in self.v1.list_namespace().items]
+        namespaces = [ns.metadata.name for ns in v1.list_namespace().items]
 
         # Open the file in write mode and clear its contents
         # with open(self.filename, "w") as f:
@@ -32,7 +36,7 @@ class ImageCollector:
         # Iterate through the namespaces
         for ns in namespaces:
             # Get the list of pods in the namespace
-            pods = self.v1.list_namespaced_pod(namespace=ns).items
+            pods = v1.list_namespaced_pod(namespace=ns).items
 
             # Iterate through the pods
             for pod in pods:
