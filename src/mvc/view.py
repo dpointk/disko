@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from sqlite import SQLiteCRUD
+from src.disko.sqlite import SQLiteCRUD
 
 db = SQLiteCRUD('image_data.db')
 
