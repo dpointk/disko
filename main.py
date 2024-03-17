@@ -1,42 +1,28 @@
 # main.py
-from src.mvc.model import ImageDataModel
-from src.mvc.controller import ImageDataController
-import tkinter as tk
-from tkinter import ttk
+from src.mvc.model import ImageDataModel 
+from src.mvc.controller import ImageController
 from src.disko.image_collector import ImageCollector
-from src.disko.sqlite import SQLiteCRUD
+from src.mvc.view import ImageRegistryManager
 
-
+# main function
 def main():
+    # set the database file
     db_file = 'image_data.db'
-    # Creating a connection to the database
-
-    db = SQLiteCRUD('image_data.db')
-
-    cluster = input("Enter the name of the cluster: ")
-    # Print the the images collected from the Kubernetes cluster
-    print(ImageCollector().collect_images(cluster))
-    # Initialize Model, View, and Controller
-
-    # Insert cluster names into the database
-    insert_cluster_names_to_db()
-    print("Clusters are successfully saved in the database.")
-
-
+    # create the model and controller
     model = ImageDataModel(db_file)
-    controller = ImageDataController(model)
-    # Creating the table for the registries
-    controller.process_image_data()
+    controller = ImageController(db_file)
 
-    # Create the main window and run the GUI application
-    root = tk.Tk()
-    root.title("Image Registry Manager")
-    root.style = ttk.Style()
-    root.style.theme_use('clam')
+    # get the cluster names
+    cluster_names = controller.get_kubernetes_clusters()
+    cluster = input("Enter the name of the cluster: \n" + str(cluster_names) + "\n")
+    print(ImageCollector().collect_images(cluster))
 
-    columns = ['Registry Name', 'Number of images', 'Percentage']
-    view = ImagesTableView(root, columns)
-    root.mainloop()
+    # insert the images with amount
+    model.insert_images_with_amount()
+
+    # create the gui
+    gui = ImageRegistryManager(db_file)
+    gui.run()
 
 if __name__ == '__main__':
     main()

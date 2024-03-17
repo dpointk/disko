@@ -16,7 +16,6 @@ class ImageCollector:
         self.crud = SQLiteCRUD(self.dbfilename)
         self.crud.create_table("images", ["image_name TEXT", "timestamp TIMESTAMP"], "image_name, timestamp")
         self.crud.create_table("registries", ["registry_name TEXT", "number_of_images INTEGER"], "registry_name, number_of_images")
-        self.crud.create_table("clusters", ["cluster TEXT"], "cluster")
 
     def collect_images(self, cluster):
         # Load the cluster configuration
