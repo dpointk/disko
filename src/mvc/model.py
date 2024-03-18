@@ -8,11 +8,11 @@ class ImageDataModel:
         self.controller = ImageController(db_file)
 
     # Inserting the registries with the amount of images
-    def insert_images_with_amount(self):
-        images = self.db.select_column('images', 'image_name')
-        amount = self.controller.calculate_amount_per_registry(images)
-        for registry, count in amount.items():
-            self.db.insert_data('registries', (registry, count))
+    # def insert_images_with_amount(self, table_name):
+    #     images = self.db.select_column(table_name, 'image_name')
+    #     amount = self.controller.calculate_amount_per_registry(images)
+    #     for registry, count in amount.items():
+    #         self.db.insert_data(table_name, (registry, count))
             
 
     # # Insert cluster names into the database

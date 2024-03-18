@@ -24,7 +24,7 @@ class ImageController:
             print("Error:", e)
             return []   
         
-    # check if the image is from dockerhub
+    # Checking if the image is from Dockerhub
     def is_from_dockerhub(self, image):
         parts = image.split('/')
         if len(parts) == 1:
@@ -35,24 +35,21 @@ class ImageController:
             return True
         return False
 
-    # calculate the amount of images per registry
+    # Getting the registry of the image
     def calculate_amount_per_registry(self, images):
         amount = {}
         for image_tuple in images:
-            image = image_tuple[0]
-            parts = image.split('/')
-            registry = parts[0]
-            if self.is_from_dockerhub(image):
-                registry = 'Dockerhub'
-            if registry in amount:
-                amount[registry] += 1
-            else:
-                amount[registry] = 1
+            registry = image_tuple[2]  # Index 2 corresponds to the registry in the image_data tuple
+            amount[registry] = amount.get(registry, 0) + 1  # Increment the count for the registry
         return amount
-    
+
+
     # calculate the percentages of the images
-    def calculate_percentages(self):
-        image_data = self.db.select_all("registries")
-        total_images = sum(image[0] for image in self.db.select_column('registries', 'number_of_images'))
-        percentages = [(image[0], image[1], (image[1] / total_images) * 100) for image in image_data]
+    def calculate_percentages(self, table_name):
+        image_data = self.db.select_all(table_name)
+        amounts = self.calculate_amount_per_registry(image_data)
+        total_images = sum(amounts.values())
+        percentages = [(registry, amount, (amount / total_images) * 100) for registry, amount in amounts.items()]
         return percentages
+
+
