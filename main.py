@@ -11,17 +11,20 @@ def main():
     # create the model and controller
     model = ImageDataModel(db_file)
     controller = ImageController(db_file)
-
+    gui = ImageRegistryManager(db_file)
     # get the cluster names
     cluster_names = controller.get_kubernetes_clusters()
-    cluster = input("Enter the name of the cluster: \n" + str(cluster_names) + "\n")
-    print(ImageCollector().collect_images(cluster))
+    #cluster = input("Enter the name of the cluster: \n" + str(cluster_names) + "\n")
+    #print(ImageCollector().collect_images(cluster))
+    #cluster = ImageRegistryManager(db_file).cluster_selection(cluster_names)
+    cluster = gui.cluster_selection(cluster_names)
+    ImageCollector().collect_images(cluster)
 
     # insert the images with amount
     model.insert_images_with_amount()
 
     # create the gui
-    gui = ImageRegistryManager(db_file)
+    
     gui.run()
 
 if __name__ == '__main__':
