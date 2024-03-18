@@ -1,25 +1,37 @@
 import sqlite3
+import sys
+import os
 
-def table_exists(conn, table_name):
+# Add the root directory of your project to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+def check_table_data(conn, table_name):
     cursor = conn.cursor()
-    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'")
-    result = cursor.fetchone()
-    return result is not None
+    # Quote the table name to handle hyphens and other special characters
+    quoted_table_name = f'"{table_name}"'
+    # Query to check for non-null TimeStamp and valid Image file names
+    cursor.execute(f'SELECT * FROM {quoted_table_name} WHERE TimeStamp IS NULL OR Image NOT LIKE "%.jpg" AND Image NOT LIKE "%.png"')
+    invalid_rows = cursor.fetchall()
+    if invalid_rows:
+        print(f'Found {len(invalid_rows)} rows with invalid data in table "{table_name}":')
+        for row in invalid_rows:
+            print(row)
+        return False
+    else:
+        print(f'All data in table "{table_name}" is valid.')
+        return True
 
 if __name__ == "__main__":
     try:
-        # Establishing Connection to SQLite Database for Image Data
+        # Establish connection to SQLite database
         conn = sqlite3.connect('image_data.db')
 
-        # Check if the "registries" table exists
-        table1_exists = table_exists(conn, "registries")
-        assert table1_exists, "The 'registries' table does not exist"
-        print("table registries exists")
-        # Check if the "images" table exists
-        table2_exists = table_exists(conn, "images")
-        assert table2_exists, "The 'images' table does not exist"
-        print("table images exists ")
+        # Example usage of check_table_data
+        table_name = 'kind-test1'
+        check_table_data(conn, table_name)
+
         # Close the connection
         conn.close()
+        print("Connection to the database closed successfully.")
     except Exception as e:
         print("Error:", e)
