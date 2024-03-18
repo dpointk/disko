@@ -130,5 +130,5 @@ class ImageRegistryManager:
         button_show_images_table = ttk.Button(self.root, text="Show Images Table", command=self.create_images_table_screen, style='Custom.TButton')
         button_show_images_table.pack(pady=10)
         
-        # Run the main event lo
+        # Run the main event 
         self.root.mainloop()
