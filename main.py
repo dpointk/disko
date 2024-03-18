@@ -11,14 +11,17 @@ def main():
     # create the model and controller
     model = ImageDataModel(db_file)
     controller = ImageController(db_file)
+    collector = ImageCollector()
 
     # get the cluster names
     cluster_names = controller.get_kubernetes_clusters()
     cluster = input("Enter the name of the cluster: \n" + str(cluster_names) + "\n")
+    # initialize the database
+    collector.initialize_db(cluster)
     print(ImageCollector().collect_images(cluster))
 
-    # insert the images with amount
-    model.insert_images_with_amount()
+    # # insert the images with amount
+    # model.insert_images_with_amount(cluster)
 
     # create the gui
     gui = ImageRegistryManager(db_file)

@@ -20,7 +20,7 @@ class ImageRegistryManager:
     def display_image_data(self):
         for row in self.treeview.get_children():
             self.treeview.delete(row)
-        percentages = self.controller.calculate_percentages()
+        percentages = self.controller.calculate_percentages(self.db)
         for data in percentages:
             self.treeview.insert('', 'end', values=(data[0], data[1], f"{data[2]:.0f}%"))
 
