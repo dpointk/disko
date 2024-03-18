@@ -37,27 +37,19 @@ class ImageController:
 
     # Getting the registry of the image
     def calculate_amount_per_registry(self, images):
-        ammount = {}
+        amount = {}
         for image_tuple in images:
-            image = image_tuple[0]
-            parts = image.split('/')
-            registry = parts[0]
-            if self.is_from_dockerhub(image):
-                if 'Dockerhub' in ammount:
-                    ammount['Dockerhub'] += 1
-                else:
-                    ammount['Dockerhub'] = 1
-            elif registry in ammount:
-                ammount[registry] += 1
-            else:
-                ammount[registry] = 1
-        return ammount
+            registry = image_tuple[2]  # Index 2 corresponds to the registry in the image_data tuple
+            amount[registry] = amount.get(registry, 0) + 1  # Increment the count for the registry
+        return amount
 
 
-    
     # calculate the percentages of the images
-    def calculate_percentages(self, db_name):
-        image_data = self.crud.select_all(db_name)
-        total_images = sum(image[3] for image in image_data)  # 'number_of_images' is the 4th column
-        percentages = [(image[0], image[3], (image[3] / total_images) * 100) for image in image_data]
+    def calculate_percentages(self, table_name):
+        image_data = self.db.select_all(table_name)
+        amounts = self.calculate_amount_per_registry(image_data)
+        total_images = sum(amounts.values())
+        percentages = [(registry, amount, (amount / total_images) * 100) for registry, amount in amounts.items()]
         return percentages
+
+

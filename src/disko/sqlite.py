@@ -25,7 +25,7 @@ class SQLiteCRUD:
     def insert_or_ignore_data(self, table_name, data):
         """Insert data into the specified table"""
         placeholders = ", ".join("?" * len(data))
-        self.cursor.execute(f'INSERT OR IGNORE INTO "{table_name}" (image, timestamp, registry, amount) VALUES ({placeholders})', data)
+        self.cursor.execute(f'INSERT OR IGNORE INTO "{table_name}" VALUES ({placeholders})', data)
         self.conn.commit()
 
 
@@ -44,7 +44,7 @@ class SQLiteCRUD:
     # Function to select data from a table where a column has a specific value
     def select_where(self, table_name, column, value):
         """Retrieve data from the specified table where the specified column has the specified value"""
-        self.cursor.execute(f"SELECT * FROM {table_name} WHERE {column} = ?", (value,))
+        self.cursor.execute(f'SELECT * FROM "{table_name}" WHERE {column} = ?', (value,))
         return self.cursor.fetchall()
 
     # Function to update data in a table where a column has a specific value
