@@ -1,4 +1,5 @@
 import tkinter as tk
+import time
 from tkinter import ttk, messagebox
 from src.disko.sqlite import SQLiteCRUD
 from src.mvc.controller import ImageController
@@ -147,11 +148,11 @@ class ImageRegistryManager:
         # Confirm image selection
         if selected_indices:
             selected_images = [self.listbox.get(index) for index in selected_indices]
-            self.selected_images = [self.listbox.get(index) for index in selected_indices]  # Store selected images as a list
-            select_images_window.destroy()  # Close the image selection window
             self.registry_input_screen(selected_images)  # Transition to input screen for registry details
+            select_images_window.destroy()  # Close the image selection window
         else:
             messagebox.showerror("Error", "Please select Docker images.")
+
     
     def registry_input_screen(self, selected_images):
         # Open a new window for entering registry details
@@ -189,22 +190,27 @@ class ImageRegistryManager:
         # Add button to submit registry details
         submit_button = ttk.Button(registry_input_window, text="Submit", command=lambda: self.submit_registry_details(
             pull_username_entry.get(), pull_password_entry.get(), push_username_entry.get(), push_password_entry.get(),
-            push_url_entry.get(), registry_input_window))
+            push_url_entry.get(), selected_images, registry_input_window))
         submit_button.grid(row=6, column=0, columnspan=2, pady=10)
 
 
-    def submit_registry_details(self, pull_username, pull_password, push_username, push_password, push_url, window):
+    def submit_registry_details(self, pull_username, pull_password, push_username, push_password, push_url, selected_images, window):
         # Handle submission of registry details
         self.pull_username = pull_username
         self.pull_password = pull_password
         self.push_username = push_username
         self.push_password = push_password
         self.push_url = push_url  # Store the push URL
+        self.selected_images = selected_images
+        self.controller.copy_images(self.selected_images, self.push_url, self.push_username, self.push_password)
         
         # Perform actions with the entered registry details
         
         # Close the input window
         window.destroy()
+
+        time.sleep(20)
+        self.root.destroy()  # Close the main window
 
 
     def run(self):

@@ -79,9 +79,12 @@ class ImageController:
     # Function for copying images to a new registry
     def copy_images(self, images, new_registry, username, password):
         count = 0
-        for image in images:
+        for image_tuple in images:
+            image = image_tuple[0]  # Index 0 corresponds to the image name in the image_data tuple
             count += 1
-            self.transfer_image(image, new_registry, count, username, password)
+            image_name, image_tag = image.split(":")
+            self.transfer_image(image_name, new_registry, count, username, password)
+
 
     
 
