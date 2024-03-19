@@ -1,19 +1,22 @@
-# main.py
 from src.mvc.controller import ImageController
-from src.disko.image_collector import ImageCollector
 from src.mvc.view import ImageRegistryManager
 
 # main function
 def main():
+    # Database file path
     db_file = 'image_data.db'
-    # Declare mvc objects
+
+    # Initialize controller and GUI objects
     controller = ImageController(db_file)
     gui = ImageRegistryManager(db_file)
-    # Get the kubernetes clusters
+
+    # Get the list of Kubernetes clusters
     cluster_names = controller.get_kubernetes_clusters()
-    # Run the GUI
+
+    # Show cluster selection window and run GUI
     gui.cluster_selection(cluster_names)
     gui.run()
 
+# Entry point of the application
 if __name__ == '__main__':
     main()
