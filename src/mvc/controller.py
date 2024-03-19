@@ -52,4 +52,5 @@ class ImageController:
         percentages = [(registry, amount, (amount / total_images) * 100) for registry, amount in amounts.items()]
         return percentages
 
+    
 

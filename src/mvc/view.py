@@ -18,6 +18,7 @@ class ImageRegistryManager:
         self.checkboxes = {col: tk.BooleanVar(value=True) for col in self.columns}
         self.controller = ImageController(db_file)  # ImageController instance
         self.image_collector = ImageCollector()  # ImageCollector instance
+        self.selected_cluster = None  # Initialize selected cluster variable
 
     def display_image_data(self, table_name):
         # Clear existing data in the treeview
@@ -60,13 +61,15 @@ class ImageRegistryManager:
         # Confirm cluster selection
         if selected_cluster:
             cluster_selection_window.destroy()  # Close the cluster selection window
+            
             self.image_collector.collect_images(selected_cluster)  # Collect images for the selected cluster
+            self.selected_cluster = selected_cluster  # Update selected cluster variable
             self.display_image_data(selected_cluster)  # Display image data for the selected cluster
-            self.create_images_table_screen(selected_cluster)  # Create images table for the selected cluster
+            #self.create_images_table_screen(selected_cluster)  # Create images table for the selected cluster
         else:
             messagebox.showerror("Error", "Please select a cluster.")  # Show error message if no cluster selected
 
-    def create_images_table_screen(self, selected_cluster):
+    def create_images_table_screen(self):
         # Create a new window for displaying images table
         images_table_window = tk.Toplevel(self.root)
         images_table_window.title("Images Table")
@@ -87,11 +90,14 @@ class ImageRegistryManager:
         self.treeview.configure(yscrollcommand=scrollbar.set)
 
         # Retrieve image data for the selected cluster
-        image_data = self.db.select_all(selected_cluster)
+        if self.selected_cluster:
+            image_data = self.db.select_all(self.selected_cluster)
 
-        # Populate the treeview with image data
-        for image in image_data:
-            self.treeview.insert('', 'end', values=(image[0], image[1]))  # Insert image data into the treeview
+            # Populate the treeview with image data
+            for image in image_data:
+                self.treeview.insert('', 'end', values=(image[0], image[1]))  # Insert image data into the treeview
+        else:
+            messagebox.showerror("Error", "No cluster selected.")  # Show error message if no cluster is selected
 
     def update_columns(self):
         # Update column display based on checkbox selection
@@ -119,4 +125,16 @@ class ImageRegistryManager:
         scrollbar.pack(side='right', fill='y')
         self.treeview.configure(yscrollcommand=scrollbar.set)
 
+        cluster_names = self.controller.get_kubernetes_clusters()
+
+        # Add buttons for cluster selection, displaying data, and showing images table
+        button_select_cluster = ttk.Button(self.root, text="Select Cluster", command=lambda: self.cluster_selection(cluster_names), style='Custom.TButton')
+        button_select_cluster.pack(pady=10)
+        
+        button_change_registry = ttk.Button(self.root, text="Change Registry", command=self.display_image_data, style='Custom.TButton')
+        button_change_registry.pack(pady=10)
+
+        button_show_images_table = ttk.Button(self.root, text="Show Images Table", command=self.create_images_table_screen, style='Custom.TButton')
+        button_show_images_table.pack(pady=10)
         self.root.mainloop()  # Start the main event loop
+
