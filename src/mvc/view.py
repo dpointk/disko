@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox, filedialog, Listbox
+from tkinter import ttk, messagebox
 from src.disko.sqlite import SQLiteCRUD
 from src.mvc.controller import ImageController
 from src.disko.image_collector import ImageCollector
@@ -25,6 +25,7 @@ class ImageRegistryManager:
         self.push_password = None
         self.listbox = None
         self.selected_images = []
+
     def display_image_data(self, table_name):
         # Clear existing data in the treeview
         for row in self.treeview.get_children():
@@ -66,11 +67,9 @@ class ImageRegistryManager:
         # Confirm cluster selection
         if selected_cluster:
             cluster_selection_window.destroy()  # Close the cluster selection window
-            
             self.image_collector.collect_images(selected_cluster)  # Collect images for the selected cluster
             self.selected_cluster = selected_cluster  # Update selected cluster variable
             self.display_image_data(selected_cluster)  # Display image data for the selected cluster
-            #self.create_images_table_screen(selected_cluster)  # Create images table for the selected cluster
         else:
             messagebox.showerror("Error", "Please select a cluster.")  # Show error message if no cluster selected
 
@@ -144,18 +143,13 @@ class ImageRegistryManager:
         confirm_button = ttk.Button(select_images_window, text="Confirm", command=lambda: self.confirm_image_selection(self.listbox.curselection(), select_images_window))
         confirm_button.pack()
 
-
-
-
-
     def confirm_image_selection(self, selected_indices, select_images_window):
         # Confirm image selection
         if selected_indices:
             selected_images = [self.listbox.get(index) for index in selected_indices]
             self.selected_images = [self.listbox.get(index) for index in selected_indices]  # Store selected images as a list
             select_images_window.destroy()  # Close the image selection window
-            # Transition to input screen for registry details
-            self.registry_input_screen(selected_images)
+            self.registry_input_screen(selected_images)  # Transition to input screen for registry details
         else:
             messagebox.showerror("Error", "Please select Docker images.")
     
@@ -242,4 +236,3 @@ class ImageRegistryManager:
         button_show_images_table = ttk.Button(self.root, text="Show Images Table", command=self.create_images_table_screen, style='Custom.TButton')
         button_show_images_table.pack(pady=10)
         self.root.mainloop()  # Start the main event loop
-
