@@ -27,6 +27,12 @@ class SQLiteCRUD:
         """Retrieve all data from the specified table"""
         self.cursor.execute(f"SELECT * FROM {table_name}")
         return self.cursor.fetchall()
+    
+    # Added a new fuction for selecting all data from a column
+    def select_column(self, table_name, column_name):
+        """Retrieve specific column data from the specified table"""
+        self.cursor.execute(f'SELECT "{column_name}" FROM "{table_name}"')
+        return self.cursor.fetchall()
 
     def select_where(self, table_name, column, value):
         """Retrieve data from the specified table where the specified column has the specified value"""
