@@ -77,15 +77,6 @@ class ImageController:
         else:
             print(f"Failed to push image {image} to {new_registry}")
 
-    # # Function for copying images to a new registry
-    # def copy_images(self, images, new_registry, username, password):
-    #     count = 0
-    #     for image_tuple in images:
-    #         image = image_tuple[0]  # Index 0 corresponds to the image name in the image_data tuple
-    #         count += 1
-    #         image_name, image_tag = image.split(":")
-    #         self.transfer_image(image_name, new_registry, count, username, password)
-
 
     def copy_images(self, images, new_registry, tag, username, password):
         for image_tuple in images:
