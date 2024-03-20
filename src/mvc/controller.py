@@ -1,10 +1,13 @@
+import docker
 from src.disko.sqlite import SQLiteCRUD
 from kubernetes import config
+import hashlib
 
 # controller.py
 class ImageController:
     def __init__(self, db_file):
         self.db = SQLiteCRUD(db_file)
+        self.docker_client = docker.from_env()
 
     # get the kubernetes clusters
     def get_kubernetes_clusters(self):
@@ -51,6 +54,52 @@ class ImageController:
         total_images = sum(amounts.values())
         percentages = [(registry, amount, (amount / total_images) * 100) for registry, amount in amounts.items()]
         return percentages
+            
+
+    # Function for pulling and pushing an image to a new registry
+    def transfer_image(self, image, new_registry, tag, username, password):
+        # Docker login
+        self.docker_client.login(username=username, password=password)
+
+        # Pull the image
+        pulled_image = self.docker_client.images.pull(image)
+        if pulled_image:
+            print(f"Image {image} pulled successfully")
+
+        # Tag the pulled image with new registry
+        new_image_tag = f"{new_registry}:{tag}"
+        pulled_image.tag(new_image_tag)
+
+        # Push the tagged image to the new registry
+        push = self.docker_client.images.push(new_image_tag)
+        if push:
+            print(f"Image {image} pushed to {new_registry}")
+        else:
+            print(f"Failed to push image {image} to {new_registry}")
+
+    # Function for copying images to a new registry
+    def copy_images(self, images, new_registry, username, password):
+        count = 0
+        for image_tuple in images:
+            image = image_tuple[0]  # Index 0 corresponds to the image name in the image_data tuple
+            count += 1
+            image_name, image_tag = image.split(":")
+            self.transfer_image(image_name, new_registry, count, username, password)
+
+
+    # def copy_images(self, images, new_registry, username, password):
+    #     count = 0
+    #     for image_tuple in images:
+    #         image = image_tuple[0]  # Index 0 corresponds to the image name in the image_data tuple
+    #         count += 1
+    #         image_name, image_tag = image.split(":")
+    #         self.transfer_image(image_name, new_registry, count, username, password)
+    #         self.export_sha256(image_name, image_tag)
+
+    # def export_sha256(self, image_name, image_tag):
+    #     sha256_hash = hashlib.sha256(f"{image_name}:{image_tag}".encode()).hexdigest()
+    #     with open("sha256_hashes.txt", "a") as file:
+    #         file.write(f"{image_name}:{image_tag} - SHA256: {sha256_hash}\n")
 
     
 

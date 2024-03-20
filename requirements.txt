@@ -1,2 +1,2 @@
 kubernetes
-pytest
+docker

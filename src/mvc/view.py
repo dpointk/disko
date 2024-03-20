@@ -1,4 +1,5 @@
 import tkinter as tk
+import time
 from tkinter import ttk, messagebox
 from src.disko.sqlite import SQLiteCRUD
 from src.mvc.controller import ImageController
@@ -151,11 +152,11 @@ class ImageRegistryManager:
         # Confirm image selection
         if selected_indices:
             selected_images = [self.listbox.get(index) for index in selected_indices]
-            self.selected_images = [self.listbox.get(index) for index in selected_indices]  # Store selected images as a list
-            select_images_window.destroy()  # Close the image selection window
             self.registry_input_screen(selected_images)  # Transition to input screen for registry details
+            select_images_window.destroy()  # Close the image selection window
         else:
             messagebox.showerror("Error", "Please select Docker images.")
+
     
     def registry_input_screen(self, selected_images):
         # Open a new window for entering registry details
@@ -210,11 +211,16 @@ class ImageRegistryManager:
         self.push_password = push_password
         self.push_url = push_url  # Store the push URL
         self.push_tag = push_tag
+        self.selected_images = selected_images
+        self.controller.copy_images(self.selected_images, self.push_url, self.push_username, self.push_password)
         
         # Perform actions with the entered registry details
         
         # Close the input window
         window.destroy()
+
+        time.sleep(20)
+        self.root.destroy()  # Close the main window
 
 
     def run(self):
