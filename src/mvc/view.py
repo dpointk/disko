@@ -199,11 +199,11 @@ class ImageRegistryManager:
         # Add button to submit registry details
         submit_button = ttk.Button(registry_input_window, text="Submit", command=lambda: self.submit_registry_details(
             pull_username_entry.get(), pull_password_entry.get(), push_username_entry.get(), push_password_entry.get(),
-            push_url_entry.get(), push_tag_entry.get(), registry_input_window))
+            push_url_entry.get(), push_tag_entry.get(), selected_images, registry_input_window))
         submit_button.grid(row=7, column=0, columnspan=2, pady=10)
 
 
-    def submit_registry_details(self, pull_username, pull_password, push_username, push_password, push_url, push_tag, window):
+    def submit_registry_details(self, pull_username, pull_password, push_username, push_password, push_url, push_tag, selected_images, window):
         # Handle submission of registry details
         self.pull_username = pull_username
         self.pull_password = pull_password
@@ -212,7 +212,7 @@ class ImageRegistryManager:
         self.push_url = push_url  # Store the push URL
         self.push_tag = push_tag
         self.selected_images = selected_images
-        self.controller.copy_images(self.selected_images, self.push_url, self.push_username, self.push_password)
+        self.controller.copy_images(self.selected_images, self.push_url, self.push_tag, self.push_username, self.push_password)
         
         # Perform actions with the entered registry details
         

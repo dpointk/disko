@@ -77,16 +77,7 @@ class ImageController:
         else:
             print(f"Failed to push image {image} to {new_registry}")
 
-    # Function for copying images to a new registry
-    def copy_images(self, images, new_registry, username, password):
-        count = 0
-        for image_tuple in images:
-            image = image_tuple[0]  # Index 0 corresponds to the image name in the image_data tuple
-            count += 1
-            image_name, image_tag = image.split(":")
-            self.transfer_image(image_name, new_registry, count, username, password)
-
-
+    # # Function for copying images to a new registry
     # def copy_images(self, images, new_registry, username, password):
     #     count = 0
     #     for image_tuple in images:
@@ -94,12 +85,19 @@ class ImageController:
     #         count += 1
     #         image_name, image_tag = image.split(":")
     #         self.transfer_image(image_name, new_registry, count, username, password)
-    #         self.export_sha256(image_name, image_tag)
 
-    # def export_sha256(self, image_name, image_tag):
-    #     sha256_hash = hashlib.sha256(f"{image_name}:{image_tag}".encode()).hexdigest()
-    #     with open("sha256_hashes.txt", "a") as file:
-    #         file.write(f"{image_name}:{image_tag} - SHA256: {sha256_hash}\n")
+
+    def copy_images(self, images, new_registry, tag, username, password):
+        for image_tuple in images:
+            image = image_tuple[0]  # Index 0 corresponds to the image name in the image_data tuple
+            image_name, image_tag = image.split(":")
+            self.transfer_image(image_name, new_registry, tag, username, password)
+            self.export_sha256(image_name, image_tag)
+
+    def export_sha256(self, image_name, image_tag):
+        sha256_hash = hashlib.sha256(f"{image_name}:{image_tag}".encode()).hexdigest()
+        with open("sha256_hashes.txt", "a") as file:
+            file.write(f"{image_name}:{image_tag} - SHA256: {sha256_hash}\n")
 
     
 
