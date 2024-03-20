@@ -14,8 +14,9 @@ def main():
     cluster_names = controller.get_kubernetes_clusters()
 
     # Show cluster selection window and run GUI
-    gui.cluster_selection(cluster_names)
+    
     gui.run()
+    #gui.cluster_selection(cluster_names)
 
 # Entry point of the application
 if __name__ == '__main__':

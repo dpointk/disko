@@ -24,6 +24,7 @@ class ImageRegistryManager:
         self.push_username = None
         self.push_password = None
         self.listbox = None
+        self.push_tag = None
         self.selected_images = []
 
     def display_image_data(self, table_name):
@@ -51,7 +52,10 @@ class ImageRegistryManager:
         # Open a new window for cluster selection
         cluster_selection_window = tk.Toplevel(self.root)
         cluster_selection_window.title("Cluster Selection")
-
+        # Lift the window above other windows
+        cluster_selection_window.lift()
+        # Ensure the window receives focus
+        cluster_selection_window.focus_force()
         # Add label and combobox for cluster selection
         label = ttk.Label(cluster_selection_window, text="Please select a cluster:")
         label.pack()
@@ -185,21 +189,27 @@ class ImageRegistryManager:
         push_password_label.grid(row=5, column=0, padx=5, pady=5, sticky="w")
         push_password_entry = ttk.Entry(registry_input_window, show="*")
         push_password_entry.grid(row=5, column=1, padx=5, pady=5)
+
+        push_tag_label = ttk.Label(registry_input_window, text="tag:")
+        push_tag_label.grid(row=6, column=0, padx=5, pady=5, sticky="w")
+        push_tag_entry = ttk.Entry(registry_input_window)
+        push_tag_entry.grid(row=6, column=1, padx=5, pady=5)
         
         # Add button to submit registry details
         submit_button = ttk.Button(registry_input_window, text="Submit", command=lambda: self.submit_registry_details(
             pull_username_entry.get(), pull_password_entry.get(), push_username_entry.get(), push_password_entry.get(),
-            push_url_entry.get(), registry_input_window))
-        submit_button.grid(row=6, column=0, columnspan=2, pady=10)
+            push_url_entry.get(), push_tag_entry.get(), registry_input_window))
+        submit_button.grid(row=7, column=0, columnspan=2, pady=10)
 
 
-    def submit_registry_details(self, pull_username, pull_password, push_username, push_password, push_url, window):
+    def submit_registry_details(self, pull_username, pull_password, push_username, push_password, push_url, push_tag, window):
         # Handle submission of registry details
         self.pull_username = pull_username
         self.pull_password = pull_password
         self.push_username = push_username
         self.push_password = push_password
         self.push_url = push_url  # Store the push URL
+        self.push_tag = push_tag
         
         # Perform actions with the entered registry details
         
@@ -232,6 +242,9 @@ class ImageRegistryManager:
         
         button_change_registry = ttk.Button(self.root, text="Change Registry", command=self.select_docker_images, style='Custom.TButton')
         button_change_registry.pack(pady=10)
+
+        button_export = ttk.Button(self.root, text="Export", command=self.select_docker_images, style='Custom.TButton')
+        button_export.pack(pady=10)
 
         button_show_images_table = ttk.Button(self.root, text="Show Images Table", command=self.create_images_table_screen, style='Custom.TButton')
         button_show_images_table.pack(pady=10)
