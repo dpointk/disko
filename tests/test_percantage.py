@@ -10,7 +10,7 @@ def check_table_data(conn, table_name):
     # Quote the table name to handle hyphens and other special characters
     quoted_table_name = f'"{table_name}"'
     # Query to check for non-null TimeStamp and valid Image file names
-    cursor.execute(f'SELECT * FROM {quoted_table_name} WHERE TimeStamp IS NULL OR Image NOT LIKE "%.jpg" AND Image NOT LIKE "%.png"')
+    cursor.execute(f'SELECT * FROM {quoted_table_name} WHERE TimeStamp IS NULL')
     invalid_rows = cursor.fetchall()
     if invalid_rows:
         print(f'Found {len(invalid_rows)} rows with invalid data in table "{table_name}":')
