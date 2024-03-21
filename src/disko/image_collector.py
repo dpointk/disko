@@ -6,19 +6,18 @@ class ImageCollector:
     def __init__(self):
         self.count = 0
         self.dbfilename = "image_data.db"
+        self.crud = SQLiteCRUD(self.dbfilename) # Create a connection to the SQLite database
 
         # Load the cluster configuration
         config.load_kube_config()
-
-        # Create a connection to the SQLite database
-        self.crud = SQLiteCRUD(self.dbfilename)
+        
         # Create the images table if it does not exist
-        self.crud.create_table("images", ["cluster_name TEXT, image_name TEXT", "timestamp TIMESTAMP, registry TEXT, amount INTEGER"], "cluster_name, image_name, timestamp")
+        self.crud.create_table("images", ["cluster_name TEXT, image_name TEXT", "timestamp TIMESTAMP, registry TEXT"], "cluster_name, image_name, timestamp")
 
         # Create the Kubernetes API client
         self.v1 = client.CoreV1Api()
 
-    def collect_images(self):
+    def collect_images(self, cluster):
         # Get the list of namespaces
         namespaces = [ns.metadata.name for ns in self.v1.list_namespace().items]
 
@@ -34,7 +33,7 @@ class ImageCollector:
                 # Insert the image information into the SQLite database
                 scan_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 # crud.insert_data("images", (image, "2022-01-01 00:00:00"))
-                self.crud.insert_or_ignore_data("images", ("", image, scan_timestamp, "", 1))
+                self.crud.insert_or_ignore_data("images", (cluster, image, scan_timestamp, ""))
 
                 # Increase the count and print the progress message
                 self.count += 1
@@ -43,5 +42,5 @@ class ImageCollector:
         print(f"\nFinished. Here are the results:")
         
         # retrieve all data from the images table
-        for cluster_name, image, timestamp, registry, amount in self.crud.select_all("images"):
-            print(f"cluster name: {cluster_name} timestamp: {timestamp}: image: {image} registry: {registry} amount: {amount}", end="\n")
+        for cluster_name, image, timestamp, registry in self.crud.select_all("images"):
+            print(f"cluster name: {cluster_name} timestamp: {timestamp}: image: {image} registry: {registry}", end="\n")
