@@ -1,6 +1,6 @@
 # model.py
 from src.disko.sqlite import SQLiteCRUD
-from src.mvc.controller import ImageController
+from src.disko.image_management.image_controller import ImageController
 
 class ImageDataModel:
     def __init__(self, db_file):

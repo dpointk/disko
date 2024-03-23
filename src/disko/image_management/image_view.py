@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from src.disko.sqlite import SQLiteCRUD
-from src.mvc.controller import ImageController
+from src.disko.image_management.image_controller import ImageController
 from src.disko.image_collector import ImageCollector
 
 class ImageRegistryManager:

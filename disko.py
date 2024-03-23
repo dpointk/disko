@@ -1,4 +1,4 @@
-from src.mvc.view import ImageRegistryManager
+from src.disko.image_management.image_view import ImageRegistryManager
 
 # main function
 def main():
