@@ -1,4 +1,4 @@
-from src.disko.image_management.image_view import ImageRegistryManager
+from src.disko.image_management.image_controller import ImageController
 
 # main function
 def main():
@@ -6,8 +6,8 @@ def main():
     db_file = 'image_data.db'
 
     # Run GUI
-    gui = ImageRegistryManager(db_file)
-    gui.run()
+    gui = ImageController(db_file)
+    gui.run_gui()
 
 # Entry point of the application
 if __name__ == '__main__':
