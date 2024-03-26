@@ -8,7 +8,7 @@ class ImageController:
     def __init__(self, db):
         self.db = db  # SQLiteCRUD instance
         self.image_collector = ImageCollector()  # ImageCollector instance
-        self.view = None  # ImageRegistryManager instance
+        self.view = ImageRegistryManager()  # ImageRegistryManager instance
 
 
     # get the kubernetes clusters
@@ -48,11 +48,6 @@ class ImageController:
             amount[registry] = amount.get(registry, 0) + 1  # Increment the count for the registry
         return amount
     
-    def get_view(self):
-        if not self.view:
-            self.view = ImageRegistryManager()
-            self.view.set_controller(self)
-        return self.view
     
     def get_image_data(self):
         return self.db.select_all('images')
@@ -68,7 +63,6 @@ class ImageController:
     
 
     def confirm_cluster_selection(self, selected_cluster, cluster_selection_window):
-        self.view = self.get_view()
         # Confirm cluster selection
         if selected_cluster:
             cluster_selection_window.destroy()  # Close the cluster selection window
@@ -80,7 +74,6 @@ class ImageController:
             messagebox.showerror("Error", "Please select a cluster.")  # Show error message if no cluster selected
 
     def run(self):
-        self.view = self.get_view()
         cluster_names = self.get_kubernetes_clusters()
         self.view.run_gui(cluster_names)
 

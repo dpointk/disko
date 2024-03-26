@@ -18,9 +18,6 @@ class ImageRegistryManager:
         self.checkboxes = {col: tk.BooleanVar(value=True) for col in self.columns}
         self.selected_cluster = None  # Initialize selected cluster variable
 
-    def set_controller(self, controller):
-        self.controller = controller
-
     def display_image_data(self, selected_cluster, registry_amount):
         # Clear existing data in the treeview
         for row in self.treeview.get_children():
