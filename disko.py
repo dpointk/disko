@@ -1,13 +1,15 @@
+from src.disko.image_management.image_model import ImageDataModel
 from src.disko.image_management.image_controller import ImageController
 
 # main function
 def main():
     # Database file path
-    db_file = 'image_data.db'
+    model = ImageDataModel()
+    db = model.get_db()
 
     # Run GUI
-    gui = ImageController(db_file)
-    gui.run_gui()
+    app = ImageController(db)
+    app.run()
 
 # Entry point of the application
 if __name__ == '__main__':
