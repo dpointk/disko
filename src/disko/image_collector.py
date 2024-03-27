@@ -12,12 +12,12 @@ class ImageCollector:
         config.load_kube_config()
         
         # Create the images table if it does not exist
-        self.crud.create_table("images", ["cluster_name TEXT, image_name TEXT", "timestamp TIMESTAMP, registry TEXT"], "cluster_name, image_name, timestamp")
+        self.crud.create_table("images", ["image_name TEXT", "timestamp TIMESTAMP, registry TEXT"], "image_name, timestamp")
 
         # Create the Kubernetes API client
         self.v1 = client.CoreV1Api()
 
-    def collect_images(self, cluster):
+    def collect_images(self):
         # Get the list of namespaces
         namespaces = [ns.metadata.name for ns in self.v1.list_namespace().items]
 
@@ -33,7 +33,7 @@ class ImageCollector:
                 # Insert the image information into the SQLite database
                 scan_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 # crud.insert_data("images", (image, "2022-01-01 00:00:00"))
-                self.crud.insert_or_ignore_data("images", (cluster, image, scan_timestamp, ""))
+                self.crud.insert_or_ignore_data("images", (image, scan_timestamp, ""))
 
                 # Increase the count and print the progress message
                 self.count += 1
@@ -42,5 +42,5 @@ class ImageCollector:
         print(f"\nFinished. Here are the results:")
         
         # retrieve all data from the images table
-        for cluster_name, image, timestamp, registry in self.crud.select_all("images"):
-            print(f"cluster name: {cluster_name} timestamp: {timestamp}: image: {image} registry: {registry}", end="\n")
+        for image, timestamp, registry in self.crud.select_all("images"):
+            print(f"timestamp: {timestamp}: image: {image} registry: {registry}", end="\n")

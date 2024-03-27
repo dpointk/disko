@@ -9,25 +9,7 @@ class ImageController:
         self.db = db  # SQLiteCRUD instance
         self.image_collector = ImageCollector()  # ImageCollector instance
         self.view = ImageRegistryManager()  # ImageRegistryManager instance
-
-
-    # get the kubernetes clusters
-    def get_kubernetes_clusters(self):
-        try:
-            # Load kubeconfig file
-            config.load_kube_config()
-
-            # Get contexts from kubeconfig
-            contexts, _ = config.list_kube_config_contexts()
-
-            # Extract cluster names
-            cluster_names = [context["context"]["cluster"] for context in contexts]
-
-            return cluster_names
-
-        except Exception as e:
-            print("Error:", e)
-            return []   
+  
         
     # Checking if the image is from Dockerhub
     def is_from_dockerhub(self, image):
@@ -44,7 +26,7 @@ class ImageController:
     def calculate_amount_per_registry(self, images):
         amount = {}
         for image_tuple in images:
-            registry = image_tuple[3]  # Index 3 corresponds to the registry column in the db
+            registry = image_tuple[2]  # Index 2 corresponds to the registry column in the db
             amount[registry] = amount.get(registry, 0) + 1  # Increment the count for the registry
         return amount
     
@@ -58,23 +40,13 @@ class ImageController:
         image_data = self.get_image_data()
         # Calculate the number of images per registry
         registry_amount = self.calculate_amount_per_registry(image_data)
-
         return registry_amount
-    
 
-    def confirm_cluster_selection(self, selected_cluster, cluster_selection_window):
-        # Confirm cluster selection
-        if selected_cluster:
-            cluster_selection_window.destroy()  # Close the cluster selection window
-            self.image_collector.collect_images(selected_cluster)  # Collect images for the selected cluster
-            self.selected_cluster = selected_cluster  # Update selected cluster variable
-            registry_amount = self.get_registry_amount()  # Get the number of images per registry
-            self.view.display_image_data(selected_cluster, registry_amount)  # Display image data for the selected cluster
-        else:
-            messagebox.showerror("Error", "Please select a cluster.")  # Show error message if no cluster selected
-
+        
     def run(self):
-        cluster_names = self.get_kubernetes_clusters()
-        self.view.run_gui(cluster_names)
+        self.image_collector.collect_images()  # Collect images for the selected cluster
+        registry_amount = self.get_registry_amount()  # Get the number of images per registry
+        image_data = self.get_image_data()  # Get the image data
+        self.view.run_gui(registry_amount, image_data)
 
 
