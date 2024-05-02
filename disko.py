@@ -1,15 +1,14 @@
-from src.disko.image_management.image_model import ImageDataModel
-from src.disko.image_management.image_controller import ImageController
+from src.disko.image_management.image_view import ImageRegistryManager
 
 # main function
 def main():
     # Database file path
-    model = ImageDataModel()
-    db = model.get_db()
+    db_file = 'image_data.db'
 
-    # Run GUI
-    app = ImageController(db)
-    app.run()
+    # Initialize controller and GUI objects
+    gui = ImageRegistryManager(db_file)
+    # Set the controller object in the GUI
+    gui.run()
 
 # Entry point of the application
 if __name__ == '__main__':
