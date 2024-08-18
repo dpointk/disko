@@ -24,7 +24,8 @@ jobs:
 
     - name: Run tests
       run: |
-        cp ~/.kube/config ~/.kube/config
+        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+        chmod 600 $HOME/.kube/config
         
     - name: Run tests
       run: |
