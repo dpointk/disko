@@ -146,6 +146,7 @@ class ImageRegistryManager:
         tag = input("Enter the tag: ").strip()
         username = input("Enter the registry username: ").strip()
         password = input("Enter the registry password: ").strip()
+        
         print("Copying image...")
 
     # Data collection for migrating cluster images
