@@ -67,7 +67,7 @@ class ImageController:
         self.docker_client.login(username=username, password=password)
 
         # Pull the image
-        pulled_image = self.docker_client.images.pull(image)
+        pulled_image = self.docker_client.images.pull(image, tag)
         if pulled_image:
             print(f"Image {image} pulled successfully")
 
