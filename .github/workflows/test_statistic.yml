@@ -27,6 +27,7 @@ jobs:
         mkdir ~/.kube
         echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
         kubectl config use-context kind-cluster1
+        kubectl get nodes
         
     - name: Run tests
       run: |
