@@ -22,13 +22,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v3
-      
     - name: Run tests
       run: |
-        echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-        chmod 600 $HOME/.kube/config
+        mkdir ~/.kube
+        echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
         
     - name: Run tests
       run: |
