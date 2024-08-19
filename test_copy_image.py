@@ -19,10 +19,10 @@ ctl1 = ImageController("image_data.db")
 images = ["python:3.8-slim-bullseye"]
 
 # password = getpass.getpass("Enter your Password: ")
-ctl1.copy_images(images, "ygalidan/test1", "v1.25.3", "ygalidan", "Ygal3165!")
+ctl1.copy_images(images, "ygalidan/test1", "3.8-slim-bullseye", "ygalidan", "Ygal3165!")
 
 docker_client.login("ygalidan", "Ygal3165!")
-pull = docker_client.images.pull("ygalidan/test1", "v1.25.3")
+pull = docker_client.images.pull("ygalidan/test1", "3.8-slim-bullseye")
 
 assert pull is not None, "Success"
 
