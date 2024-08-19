@@ -8,10 +8,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-  env:
-    DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+    env:
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-  steps:
+    steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
