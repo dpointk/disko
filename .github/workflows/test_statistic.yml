@@ -24,4 +24,5 @@ jobs:
         
     - name: Run tests
       run: |
-        pytest test_copy_images.py
+        pytest test_statistic.py
+        pytest test_copy_image.py
