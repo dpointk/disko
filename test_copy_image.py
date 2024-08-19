@@ -1,4 +1,4 @@
-import getpass
+# import getpass
 import docker
 from src.disko.image_management.image_controller import *
 from src.disko.image_collector import *
@@ -17,10 +17,10 @@ ctl1 = ImageController("image_data.db")
 # images = sql.select_all("kind-cluster1")
 images = ["python:3.8-slim-bullseye"]
 
-password = getpass.getpass("Enter your Password: ")
-ctl1.copy_images(images, "ygalidan/test1", "3.8-slim-bullseye", "ygalidan", password)
+# password = getpass.getpass("Enter your Password: ")
+ctl1.copy_images(images, "ygalidan/test1", "3.8-slim-bullseye", "ygalidan", "Ygal3165!")
 
-docker_client.login("ygalidan", password)
+docker_client.login("ygalidan", "Ygal3165!")
 pull = docker_client.images.pull("ygalidan/test1", "3.8-slim-bullseye")
 
 assert pull is not None, "Success"
