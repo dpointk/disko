@@ -67,7 +67,7 @@ class ImageController:
         self.docker_client.login(username=username, password=password)
 
         # Pull the image
-        pulled_image = self.docker_client.images.pull(image)
+        pulled_image = self.docker_client.images.pull(image, tag)
         if pulled_image:
             print(f"Image {image} pulled successfully")
 
@@ -96,7 +96,7 @@ class ImageController:
                 image_name, image_tag = image_name.split(":")
             else:
                 image_tag = tag
-
+            
             self.transfer_image(image_name, new_registry, tag, username, password)
             self.export_sha256(image_name, image_tag)
 
