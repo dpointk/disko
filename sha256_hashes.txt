@@ -34,3 +34,5 @@ docker.io/kindest/local-path-provisioner:v0.0.22-kind.0 - SHA256: 63c860014dafce
 docker.io/kindest/local-path-provisioner:v0.0.22-kind.0 - SHA256: 63c860014dafceecf6701286259199aee58af579dc922c5835325ff31cd45f40
 docker.io/kindest/local-path-provisioner:v0.0.22-kind.0 - SHA256: 63c860014dafceecf6701286259199aee58af579dc922c5835325ff31cd45f40
 python:3.8-slim-bullseye - SHA256: 43487dc012af2ecc02293ecb96ec898d930e9f1f42656a50fcc19918c4bcf947
+registry.k8s.io/kube-proxy:v1.25.3 - SHA256: 476cd9d6cf760c7b6615cfd869cfd7cd1544caf87d4953a1417018cdacab94e6
+registry.k8s.io/kube-proxy:v1.25.3 - SHA256: 476cd9d6cf760c7b6615cfd869cfd7cd1544caf87d4953a1417018cdacab94e6
