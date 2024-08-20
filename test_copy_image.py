@@ -13,6 +13,6 @@ ctl1.copy_images(images, "ygalidan/test1", "3.8-slim-bullseye", "ygalidan", pass
 
 def test_copy_images():
     docker_client.login("ygalidan", password)
-    pull = docker_client.images.pull("ygalidan/test1", "3.8-slim-bullseyf")
+    pull = docker_client.images.pull("ygalidan/test1", "3.8-slim-bullseye")
     assert pull is not None
 
