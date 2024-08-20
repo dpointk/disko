@@ -4,7 +4,7 @@ import docker
 docker_client = docker.from_env()
 
 # Import image_controller.py to use any function on my db file
-ctl1 = ImageController()
+ctl1 = ImageController("")
 password = os.getenv("DOCKERHUB_PASSWORD")
 
 images = ["python:3.8-slim-bullseye"]
