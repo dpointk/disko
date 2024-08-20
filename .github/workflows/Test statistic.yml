@@ -25,7 +25,7 @@ jobs:
       - name: Run test copy images
         run: |
           pytest test_copy_image.py
-          exit_code = $?
+          exit_code=$?
           if [[ exit_code == 0]]; then
             echo "✅ Copy images test was completed successfully!"
           else
