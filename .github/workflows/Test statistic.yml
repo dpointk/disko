@@ -25,4 +25,5 @@ jobs:
       - name: Run test copy images
         run: |
           pytest test_copy_image.py
+          echo $?
           
