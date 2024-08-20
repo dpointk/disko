@@ -14,6 +14,9 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Set up kubeconfig
+        run: echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
+
       - name: Installing requirements
         run: |
           python -m pip install --upgrade pip
