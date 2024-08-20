@@ -6,10 +6,8 @@ on:
 
 jobs:
   TestStatistic:
+    name: Statistic test
     runs-on: ubuntu-latest
-
-    env:
-      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v3
@@ -26,14 +24,9 @@ jobs:
         run: |
           pytest test_statistic.py
           echo "✅ Statistic test was completed successfully!"
-          # exit_code=$?
-          # if [ $exit_code -eq "0" ]; then
-          #   echo "✅ Copy images test was completed successfully!"
-          # else
-          #   echo "❌ Copy images test was failed!"
-          # fi
 
   TestCopyImages:
+    name: Copy images test
     runs-on: ubuntu-latest
 
     env:
