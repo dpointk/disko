@@ -6,7 +6,6 @@ on:
 
 jobs:
   TestStatistic:
-    name: Statistic test
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +25,6 @@ jobs:
           echo "✅ Statistic test was completed successfully!"
 
   TestCopyImages:
-    name: Copy images test
     runs-on: ubuntu-latest
 
     env:
