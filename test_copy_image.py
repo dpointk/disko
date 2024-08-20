@@ -3,7 +3,7 @@ import os
 import docker
 docker_client = docker.from_env()
 
-# Import image_controller.py to use any function on my db file
+# Import image_controller.py to use any function
 ctl1 = ImageController("")
 password = os.getenv("DOCKERHUB_PASSWORD")
 
