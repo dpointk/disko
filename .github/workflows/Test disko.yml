@@ -19,6 +19,9 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > $HOME/.kube/config
 
+      - name: Port forward Kubernetes API
+        run: nohup kubectl port-forward --address 0.0.0.0 svc/kubernetes 44781:443 &
+
       - name: Installing requirements
         run: |
           python -m pip install --upgrade pip
