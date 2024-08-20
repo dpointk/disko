@@ -15,4 +15,5 @@ def test_copy_images():
     docker_client.login("ygalidan", password)
     pull = docker_client.images.pull("ygalidan/test1", "3.8-slim-bullseye")
     assert pull is not None, "success"
+    print("✅ Test copy images was completed successfully!")
 
