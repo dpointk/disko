@@ -26,8 +26,7 @@ jobs:
         run: |
           pytest test_copy_image.py
           exit_code=$?
-          echo exit_code
-          if [ exit_code -eq "0" ]; then
+          if [ $exit_code -eq "0" ]; then
             echo "✅ Copy images test was completed successfully!"
           else
             echo "❌ Copy images test was failed!"
