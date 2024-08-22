@@ -58,3 +58,4 @@ docker.io/kindest/kindnetd:v20240202-8f1494ea - SHA256: 89fba6abb094555ffd247fd9
 docker.io/kindest/kindnetd:v20240202-8f1494ea - SHA256: 89fba6abb094555ffd247fd93d33ecdb84af447d8dde9925614e46553c9f376f
 docker.io/kindest/kindnetd:v20240202-8f1494ea - SHA256: 89fba6abb094555ffd247fd93d33ecdb84af447d8dde9925614e46553c9f376f
 python:3.8-slim-bullseye - SHA256: 43487dc012af2ecc02293ecb96ec898d930e9f1f42656a50fcc19918c4bcf947
+docker.io/kindest/local-path-provisioner:v20240202-8f1494ea - SHA256: d0aeb8905d5956a7117896acdbf8a7467fe5ddb12fea9f4b94c05fabc5236cd9

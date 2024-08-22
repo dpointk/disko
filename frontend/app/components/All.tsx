@@ -72,26 +72,26 @@ const All: React.FC<AllProps> = ({ cluster, onImagesFetched }) => {
 
     return (
         <div style={styles.imageContainer}>
-            <button onClick={toggleTable} style={styles.showImagesButton}>
+            <button onClick={toggleTable} className="button-small">
                 {showTable ? 'Hide Images' : 'Show Images'}
             </button>
             {loading && <p>Loading images...</p>}
             {error && <p>{error}</p>}
             {showTable && images.length > 0 && (
-                <table style={styles.imageTable}>
+                <table>
                     <thead>
                         <tr>
-                            <th style={styles.tableHeader}>Image Name</th>
-                            <th style={styles.tableHeader}>Date</th>
-                            <th style={styles.tableHeader}>Registry</th>
+                            <th>Image Name</th>
+                            <th>Date</th>
+                            <th>Registry</th>
                         </tr>
                     </thead>
                     <tbody>
                         {images.map((image, index) => (
                             <tr key={index}>
-                                <td style={styles.tableCell}>{image[0]}</td> {/* Image Name */}
-                                <td style={styles.tableCell}>{image[1]}</td> {/* Date */}
-                                <td style={styles.tableCell}>{image[2]}</td> {/* Registry */}
+                                <td>{image[0]}</td> {/* Image Name */}
+                                <td>{image[1]}</td> {/* Date */}
+                                <td>{image[2]}</td> {/* Registry */}
                             </tr>
                         ))}
                     </tbody>
