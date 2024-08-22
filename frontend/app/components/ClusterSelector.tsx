@@ -65,8 +65,8 @@ const ClusterSelector: React.FC<ClusterSelectorProps> = ({ onClusterChange }) =>
                 ))}
             </select>
             <button
+                className="button-small"
                 onClick={handleSubmit}
-                style={{ backgroundColor: 'blue', color: 'white', padding: '10px', border: 'none', borderRadius: '5px', marginTop: '10px' }}
             >
                 Submit
             </button>

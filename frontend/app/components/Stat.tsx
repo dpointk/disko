@@ -15,6 +15,7 @@ export function Stat() {
     const [error, setError] = useState<string | null>(null);
     const [cluster, setCluster] = useState<string | null>(null);
 
+    //setLoading(false);
     const fetchStatistics = async (cluster: string) => {
         try {
             setLoading(true);
@@ -30,6 +31,7 @@ export function Stat() {
     };
 
     useEffect(() => {
+        //setLoading(false);
         const handleUpdateStatistics = (event: CustomEvent) => {
             const selectedCluster = event.detail.cluster;
             setCluster(selectedCluster);
@@ -50,31 +52,25 @@ export function Stat() {
 
     return (
         <div>
-            <h3>Image Statistics</h3>
             {loading ? (
                 <p>Loading...</p>
             ) : error ? (
                 <p>{error}</p>
             ) : (
-                <table className="table table-dark table-hover" style={{ 
-                    borderCollapse: 'separate', 
-                    borderSpacing: '10px', 
-                    width: '50%' ,
-                    border: '1px solid #ddd'
-                }}>
+                <table>
                     <thead>
                         <tr>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #ccc', textAlign: 'left' }}>Registry</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #ccc', textAlign: 'left' }}>Number of Images</th>
-                            <th style={{ padding: '10px', borderBottom: '2px solid #ccc', textAlign: 'left' }}>Percentage</th>
+                            <th>Registry</th>
+                            <th>Number of Images</th>
+                            <th>Percentage</th>
                         </tr>
                     </thead>
                     <tbody>
                         {statistics.map((stat, index) => (
                             <tr key={index}>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{stat.registry}</td>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{stat.amount}</td>
-                                <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{stat.percentage}%</td>
+                                <td>{stat.registry}</td>
+                                <td>{stat.amount}</td>
+                                <td>{stat.percentage}%</td>
                             </tr>
                         ))}
                     </tbody>
