@@ -38,40 +38,40 @@ export function CopyImageForm({ cluster, availableImages }: CopyImageFormProps) 
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      setMessage('');
+        e.preventDefault();
+        setMessage('');
 
-      const params = new URLSearchParams({
-        images: formData.images.join(','), // Encode images array
-        new_registry: formData.new_registry,
-        tag: formData.tag,
-        username: formData.username,
-        password: formData.password,
-        target_username: formData.target_username,
-        target_password: formData.target_password,
-        cluster: cluster || '', 
-    });
-  
-      const query = params.toString();
+        const params = new URLSearchParams({
+            images: formData.images.join(','), // Encode images array
+            new_registry: formData.new_registry,
+            tag: formData.tag,
+            username: formData.username,
+            password: formData.password,
+            target_username: formData.target_username,
+            target_password: formData.target_password,
+            cluster: cluster || '',
+        });
 
-      console.log(`Request URL: http://localhost:5000/api/copyimage?${query}`);
-  
-      try {
-          const response = await fetch(`http://localhost:5000/api/copyimage?${query}`, {
-              method: 'GET',
-          });
-  
-          if (response.ok) {
-              const result = await response.json();
-              setMessage('Success: Image(s) copied successfully!');
-          } else {
-              setMessage('Error in response');
-          }
-      } catch (error) {
-          console.error('Fetch error:', error); // Log fetch error
-          setMessage('Network error');
-      }
-  };
+        const query = params.toString();
+
+        console.log(`Request URL: http://localhost:5000/api/copyimage?${query}`);
+
+        try {
+            const response = await fetch(`http://localhost:5000/api/copyimage?${query}`, {
+                method: 'GET',
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                setMessage('Success: Image(s) copied successfully!');
+            } else {
+                setMessage('Error in response');
+            }
+        } catch (error) {
+            console.error('Fetch error:', error); // Log fetch error
+            setMessage('Network error');
+        }
+    };
 
     const openModal = () => setIsOpen(true);
     const closeModal = () => setIsOpen(false);
@@ -89,65 +89,79 @@ export function CopyImageForm({ cluster, availableImages }: CopyImageFormProps) 
                 <div style={styles.overlay}>
                     <div style={styles.modal}>
                         <button onClick={closeModal} style={styles.closeButton}>X</button>
-                        <h1>Copy Image</h1>
-                        <form onSubmit={handleSubmit}>
-                            <div>
-                                <label htmlFor="images">Images:</label>
-                                <select
-                                    id="images"
-                                    name="images"
-                                    multiple
-                                    value={formData.images}
-                                    onChange={handleChange}
-                                >
-                                    {availableImages.map((image) => (
-                                        <option key={image} value={image}>
-                                            {image}
-                                        </option>
-                                    ))}
-                                </select>
+                        <h2>Copy Image</h2>
+                        <form onSubmit={handleSubmit} className="form-container">
+                            <div className="form-body">
+                                <div>
+                                    <label htmlFor="images">Images:</label>
+                                    <select
+                                        id="images"
+                                        name="images"
+                                        multiple
+                                        value={formData.images}
+                                        onChange={handleChange}
+                                        style={styles.input}
+                                    >
+                                        {availableImages.map((image) => (
+                                            <option key={image} value={image}>
+                                                {image}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label htmlFor="new_registry">New Registry URL:</label>
+                                    <input
+                                        type="text"
+                                        id="new_registry"
+                                        name="new_registry"
+                                        value={formData.new_registry}
+                                        onChange={handleChange}
+                                        placeholder="Enter new registry URL"
+                                        style={styles.input}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="target_username">Target Username:</label>
+                                    <input
+                                        type="text"
+                                        id="target_username"
+                                        name="target_username"
+                                        value={formData.target_username}
+                                        onChange={handleChange}
+                                        placeholder="Enter target username"
+                                        style={styles.input}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="target_password">Target Password:</label>
+                                    <input
+                                        type="password"
+                                        id="target_password"
+                                        name="target_password"
+                                        value={formData.target_password}
+                                        onChange={handleChange}
+                                        placeholder="Enter target password"
+                                        style={styles.input}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="tag">Tag:</label>
+                                    <input
+                                        type="text"
+                                        id="tag"
+                                        name="tag"
+                                        value={formData.tag}
+                                        onChange={handleChange}
+                                        placeholder="Enter image tag"
+                                        style={styles.input}
+                                    />
+                                </div>
                             </div>
-                            <div>
-                                <label htmlFor="new_registry">New Registry URL:</label>
-                                <input
-                                    type="text"
-                                    id="new_registry"
-                                    name="new_registry"
-                                    value={formData.new_registry}
-                                    onChange={handleChange}
-                                />
+
+                            <div className="form-footer">
+                                <button className="button-small" type="submit">Submit</button>
                             </div>
-                            <div>
-                                <label htmlFor="target_username">Target Username:</label>
-                                <input
-                                    type="text"
-                                    id="target_username"
-                                    name="target_username"
-                                    value={formData.target_username}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="target_password">Target Password:</label>
-                                <input
-                                    type="password"
-                                    id="target_password"
-                                    name="target_password"
-                                    value={formData.target_password}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="tag">Tag:</label>
-                                <input
-                                    type="text"
-                                    id="tag"
-                                    name="tag"
-                                    value={formData.tag}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <button type="submit">Submit</button>
                         </form>
                         {message && <p>{message}</p>}
                     </div>
@@ -175,14 +189,23 @@ const styles = {
         borderRadius: '8px',
         position: 'relative' as 'relative',
     },
-    closeButton: {
+      closeButton: {
         position: 'absolute' as 'absolute',
         top: '10px',
         right: '10px',
-        background: 'red',
-        color: 'white',
+        backgroundColor: 'transparent',
+        color: 'black',
         border: 'none',
-        borderRadius: '50%',
+        fontSize: '18px',
+        fontWeight: 'bold',
         cursor: 'pointer',
+      },
+    input: {
+        width: '100%',
+        padding: '8px',
+        margin: '8px 0',
+        boxSizing: 'border-box',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
     },
 };
