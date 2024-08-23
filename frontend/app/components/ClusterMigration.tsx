@@ -15,6 +15,8 @@ export function ClusterMigrationForm({ isOpen, onClose }: ClusterMigrationFormPr
     helm_chart_path: '',
   });
 
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -25,26 +27,31 @@ export function ClusterMigrationForm({ isOpen, onClose }: ClusterMigrationFormPr
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await fetch('/api/clustermigration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Success:', result);
-        // Handle successful form submission, e.g., show a success message
-      } else {
-        console.error('Error:', response.statusText);
-        // Handle server errors, e.g., show an error message
-      }
+    const query = new URLSearchParams({
+        registry: formData.registry,
+        tag: formData.tag,
+        username: formData.username,
+        password: formData.password,
+        helm_chart_path: formData.helm_chart_path,
+    }).toString();
+
+    try {
+        const response = await fetch(`http://localhost:5000/api/clustermigration?${query}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            setStatusMessage('Success: Image migrated and Helm chart updated.');
+        } else {
+            setStatusMessage(`Error: ${response.statusText}`);
+        }
     } catch (error) {
-      console.error('Error:', error);
-      // Handle network errors, e.g., show a network error message
+        setStatusMessage(`Network Error: ${error}`);
     }
   };
 
@@ -108,6 +115,11 @@ export function ClusterMigrationForm({ isOpen, onClose }: ClusterMigrationFormPr
           </div>
           <button className="button-small" type="submit">Submit</button>
         </form>
+        {statusMessage && (
+          <div style={styles.statusMessage}>
+            {statusMessage}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -147,6 +159,13 @@ const styles = {
     display: 'flex' as 'flex',
     justifyContent: 'center' as 'center',
     alignItems: 'center' as 'center',
+  },
+  statusMessage: {
+    marginTop: '20px',
+    padding: '10px',
+    borderRadius: '5px',
+    backgroundColor: '#f0f0f0',
+    color: '#333',
   },
 };
 

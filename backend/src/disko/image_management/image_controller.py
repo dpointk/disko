@@ -196,6 +196,6 @@ class ImageController:
         current_image = self.get_current_image(values_file_path)
         self.copy_images(current_image, registry, tag, username, password)
         self.replace_image(values_file_path, registry)
-        self.helm_upgrade_release(release_name, helm_chart_path)
+        ##self.helm_upgrade_release(release_name, helm_chart_path)
 
 
