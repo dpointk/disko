@@ -58,3 +58,14 @@ docker.io/kindest/kindnetd:v20240202-8f1494ea - SHA256: 89fba6abb094555ffd247fd9
 docker.io/kindest/kindnetd:v20240202-8f1494ea - SHA256: 89fba6abb094555ffd247fd93d33ecdb84af447d8dde9925614e46553c9f376f
 docker.io/kindest/kindnetd:v20240202-8f1494ea - SHA256: 89fba6abb094555ffd247fd93d33ecdb84af447d8dde9925614e46553c9f376f
 python:3.8-slim-bullseye - SHA256: 43487dc012af2ecc02293ecb96ec898d930e9f1f42656a50fcc19918c4bcf947
+docker.io/python:3.8-slim-bullseye - SHA256: 78d5004f553a840b7f7aec948799710a8510b1ce8bd40de3ada6adc8e28bf305
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
