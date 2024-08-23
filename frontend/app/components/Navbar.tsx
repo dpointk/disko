@@ -3,7 +3,14 @@ import Logo from "../../public/assests/disko.png";
 
 
 const navLinks = [
-    {name: 'Home'},{name : 'About'}
+    {
+        name: 'Home',
+        href: "/"
+    },
+    {
+        name : 'About',
+        href: "/about"
+    }
 ];
 
 export function Navbar() { 
@@ -14,7 +21,7 @@ return(
       <Image src={Logo} alt="Logo" width="45" height="40"/>
       <div className="flex gap-x-6">
           {navLinks.map((link, index) => (
-            <a className="nav-link" href="/" key={index}>
+            <a className="nav-link" href={link.href} key={index}>
               {link.name}
             </a>
           ))}  
