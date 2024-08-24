@@ -3,18 +3,10 @@ name: API Tests
 on:
   push:
     branches:
-<<<<<<< HEAD
       - dev    
   pull_request:
     branches:
       - dev
-=======
-      - amir
-  pull_request:
-    branches:
-      - amir
->>>>>>> da15ac0 ( UPDATE CICD : add the option for the ci to the gui)
-
 jobs:
   test:
     runs-on: ubuntu-latest
