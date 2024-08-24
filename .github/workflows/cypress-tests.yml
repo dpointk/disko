@@ -3,10 +3,10 @@ name: Cypress UI Test
 on: 
   push:
     branches:
-      - amir  # Trigger the workflow on pushes to the 'amir' branch
+      - pre-main
   pull_request:
     branches:
-      - amir  # Trigger the workflow on pull requests to the 'amir' branch
+      - pre-main
 
 jobs:
   cypress-run:
