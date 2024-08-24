@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, CSSProperties } from 'react';
 
 interface CopyImageFormProps {
     cluster: string; 
@@ -171,7 +171,7 @@ export function CopyImageForm({ cluster, availableImages }: CopyImageFormProps) 
     );
 }
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
     overlay: {
         position: 'fixed' as 'fixed',
         top: 0,
@@ -189,7 +189,7 @@ const styles = {
         borderRadius: '8px',
         position: 'relative' as 'relative',
     },
-      closeButton: {
+    closeButton: {
         position: 'absolute' as 'absolute',
         top: '10px',
         right: '10px',
@@ -199,12 +199,12 @@ const styles = {
         fontSize: '18px',
         fontWeight: 'bold',
         cursor: 'pointer',
-      },
+    },
     input: {
         width: '100%',
         padding: '8px',
         margin: '8px 0',
-        boxSizing: 'border-box',
+        boxSizing: 'border-box' as 'border-box',  // Type assertion here
         border: '1px solid #ccc',
         borderRadius: '4px',
     },
