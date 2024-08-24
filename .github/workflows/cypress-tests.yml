@@ -1,0 +1,44 @@
+name: Cypress UI Test
+
+on: 
+  push:
+    branches:
+      - amir  # Trigger the workflow on pushes to the 'amir' branch
+  pull_request:
+    branches:
+      - amir  # Trigger the workflow on pull requests to the 'amir' branch
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.17.0'  # Ensure this matches the required Node.js version
+
+      - name: Install Root Dependencies
+        run: npm ci
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build the application
+        run: |
+          cd frontend
+          npm run build  # Build the Next.js application for production
+
+      - name: Start the application
+        run: |
+          cd frontend
+          npm run start &  # Start the Next.js application in production mode
+          npx wait-on http://localhost:3000
+
+      - name: Run Cypress tests
+        run: npx cypress run  # Run Cypress from the root directory where `cypress.config.js` is located
