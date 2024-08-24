@@ -47,13 +47,8 @@ jobs:
     - name: Run Tests
       run: |
         echo "Running API validation tests...🏃🏽"
-<<<<<<< HEAD
-        pytest tests/ --disable-warnings > api_test.py || exit_code=$?
-        cat api_test.py
-=======
         pytest tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/copyImage_test.py tests/migration_test.py --disable-warnings > api-validation-results.txt || exit_code=$?
         cat api-validation-results.txt
->>>>>>> 26ba7a1 ( UPDATE CICD : add the option for the ci to the gui)
         if [ $exit_code -ne 0 ]; then
           echo "Tests failed! Analyzing failed tests...🔍"
           grep -E "^FAIL|^ERROR" api-validation-results.txt
