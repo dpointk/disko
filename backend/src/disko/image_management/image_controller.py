@@ -198,4 +198,9 @@ class ImageController:
         self.replace_image(values_file_path, registry)
         ##self.helm_upgrade_release(release_name, helm_chart_path)
 
-
+    def present_images_per_cluster(cluster):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        db_name = os.path.join(base_dir, '../../../image_data.db')
+        db = SQLiteCRUD(db_name)
+        images = db.select_all(cluster)
+        return(images)
