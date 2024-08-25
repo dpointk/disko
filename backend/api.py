@@ -15,29 +15,28 @@ from src.disko.image_management.image_controller import ImageController
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-api = Blueprint('api', __name__, url_prefix='/api')
-
+postReq_bp = Blueprint('postReq_bp', __name__, url_prefix='/api')
+getStatRes_bp = Blueprint('getStatRes', __name__, url_prefix='/api')
+cluster_bp = Blueprint('cluster', __name__, url_prefix='/api')
+imageShow_bp = Blueprint('imageShow_bp', __name__, url_prefix='/api')
+copyimage_bp = Blueprint('copyimage_bp', __name__, url_prefix='/api')
+migration_bp = Blueprint('migration_bp', __name__, url_prefix='/api')
 
 def get_image_controller():
-    # Initializes and returns an ImageController instance connected to the database
-    db_name = os.path.join(base_dir, 'image_data.db')
-    print(db_name)
+    db_name = os.path.join(base_dir, '../../../image_data.db')
     return ImageController(db_name)
 
 controller = get_image_controller()
 
-@api.route('/clusters', methods=['GET'])
+@cluster_bp.route('/clusters', methods=['GET'])
 def get_clusters():
-    # Fetches a list of Kubernetes clusters and returns it as a JSON response
     clusters = controller.get_kubernetes_clusters()
     return jsonify(clusters)
 
-@api.route('/selected-cluster', methods=['POST'])
+@postReq_bp.route('/selected-cluster', methods=['POST'])
 def select_cluster():
-    # Processes the selected cluster by collecting images for it
     data = request.json
     cluster = data.get('cluster')
     
@@ -52,9 +51,8 @@ def select_cluster():
         logging.error("Error in select_cluster: %s", traceback.format_exc())
         return jsonify({'error': str(e)}), 500
 
-@api.route('/statistics', methods=['GET'])
+@getStatRes_bp.route('/statistics', methods=['GET'])
 def get_statistics():
-    # Retrieves statistical data for a specified cluster and returns it as a JSON response
     cluster = request.args.get('cluster')
     
     if not cluster:
@@ -75,9 +73,8 @@ def get_statistics():
         logging.error("Error in get_statistics: %s", traceback.format_exc())
         return jsonify({'error': 'Internal Server Error'}), 500
 
-@api.route('/clustermigration',methods=['GET'])
+@migration_bp.route('/clustermigration',methods=['GET'])
 def migration():
-    # Migrates a cluster's images to a new registry based on provided parameters
     registry = request.args.get('registry')
     tag = request.args.get('tag')
     username = request.args.get('username')
@@ -90,38 +87,52 @@ def migration():
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
-@api.route('/images/<cluster>', methods=['GET'])
+@imageShow_bp.route('/images/<cluster>', methods=['GET'])
 def get_images(cluster):
-    # Fetches the list of images associated with a given cluster and returns it as a JSON response
     try:
-        images = controller.present_images_per_cluster(cluster)
+        images=controller.present_images_per_cluster(cluster)
+
         return jsonify(images), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@api.route('/copyimage', methods=['GET'])
+@copyimage_bp.route('/copyimage', methods=['GET'])
 def copy_images():
-    # Copies images to a new registry based on provided parameters
-    registry = request.args.get('new_registry')
-    tag = request.args.get('tag')
-    username = request.args.get('target_username')
-    password = request.args.get('target_password')
-    images = request.args.getlist('images')
-    
-    try:
-        # Call the copy_images method
-        controller.copy_images(images, registry, tag, username, password)
 
-        # Return a success message in JSON format if the operation was successful (200)
+    # Extract query parameters from the incoming GET request
+    registry=request.args.get('new_registry')
+    tag=request.args.get('tag')
+    username=request.args.get('target_username')
+    password=request.args.get('target_password')
+    images = request.args.getlist('images')
+
+    # Creating a database file path relative to the base directory
+    db_name = os.path.join(base_dir, '../../../image_data.db')
+
+     # Initialize the ImageController with the path to the database
+    controller=ImageController(db_name)
+    try:
+
+        # Call the copy_images method
+        controller.copy_images(images,registry,tag,username,password)
+
+          # Return a success message in JSON format if the operation was successful (200) or not (500)
         return jsonify({'message': 'Images copied successfully!'}), 200
     except Exception as e:
-        # Return an error message in JSON format if the operation failed (500)
         return jsonify({'message': str(e)}), 500
  
 
-if __name__ == '__main__':
-    # Configure the Flask app and enable CORS for the API
+def create_app():
     app = Flask(__name__)
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
-    app.register_blueprint(api)
-    app.run(debug=True, host="0.0.0.0")
+    CORS(app,resources={r"/api/*": {"origins": "*"}})
+    app.register_blueprint(cluster_bp)
+    app.register_blueprint(postReq_bp)
+    app.register_blueprint(imageShow_bp)
+    app.register_blueprint(getStatRes_bp)
+    app.register_blueprint(copyimage_bp)
+    app.register_blueprint(migration_bp)
+    return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True)
