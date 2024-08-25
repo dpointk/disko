@@ -203,4 +203,4 @@ class ImageController:
         db_name = os.path.join(base_dir, '../../../image_data.db')
         db = SQLiteCRUD(db_name)
         images = db.select_all(cluster)
-        return (images)
+        return(images)
