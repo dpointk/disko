@@ -3,7 +3,7 @@ import sqlite3
 class SQLiteCRUD:
     # Constructor that connects to the database
     def __init__(self, db_name):
-        self.conn = sqlite3.connect(db_name)
+        self.conn = sqlite3.connect(db_name, check_same_thread=False)
         self.cursor = self.conn.cursor()
 
     # Function to create a table
