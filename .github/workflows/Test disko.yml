@@ -46,6 +46,12 @@ jobs:
           pytest test_copy_image.py
           echo "✅ Copy images test was completed successfully!"
 
+  TestClusterMirgation:
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
