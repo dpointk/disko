@@ -1,3 +1,9 @@
+# ------------------------------------------ Test intro ------------------------------------------ #
+# # The test verifies that the calculate_percentages method correctly calculates and returns the 
+# percentage distribution of images in a Kubernetes cluster (kind-cluster1). It ensures the output 
+# consists of strings, integers, and floats in the expected format.
+# ------------------------------------------ Test intro ------------------------------------------ #
+
 from src.disko.image_collector import *
 
 # Create db from cluster
