@@ -2,14 +2,23 @@ import os
 import logging
 import traceback
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint
 from src.disko.image_collector import ImageCollector
 from src.disko.image_management.image_controller import ImageController
+from flask_cors import CORS 
+
 
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 base_dir = os.path.dirname(os.path.abspath(__file__))
+
+postReq_bp = Blueprint('postReq_bp', __name__, url_prefix='/api')
+getStatRes_bp = Blueprint('getStatRes', __name__, url_prefix='/api')
+cluster_bp = Blueprint('cluster', __name__, url_prefix='/api')
+imageShow_bp = Blueprint('imageShow_bp', __name__, url_prefix='/api')
+copyimage_bp = Blueprint('copyimage_bp', __name__, url_prefix='/api')
+migration_bp = Blueprint('migration_bp', __name__, url_prefix='/api')
 
 def get_image_controller():
     db_name = os.path.join(base_dir, '../../../image_data.db')
@@ -17,12 +26,12 @@ def get_image_controller():
 
 controller = get_image_controller()
 
-@app.route('/api/clusters', methods=['GET'])
+@cluster_bp.route('/clusters', methods=['GET'])
 def get_clusters():
     clusters = controller.get_kubernetes_clusters()
     return jsonify(clusters)
 
-@app.route('/api/selected-cluster', methods=['POST'])
+@postReq_bp.route('/selected-cluster', methods=['POST'])
 def select_cluster():
     data = request.json
     cluster = data.get('cluster')
@@ -38,7 +47,7 @@ def select_cluster():
         logging.error("Error in select_cluster: %s", traceback.format_exc())
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/statistics', methods=['GET'])
+@getStatRes_bp.route('/statistics', methods=['GET'])
 def get_statistics():
     cluster = request.args.get('cluster')
     
@@ -47,7 +56,7 @@ def get_statistics():
     
     try:
         percentages = controller.calculate_percentages(cluster)
-        results = results = []
+        results = []
         for item in percentages:
             results.append({
                 "registry": item[0],
@@ -60,7 +69,7 @@ def get_statistics():
         logging.error("Error in get_statistics: %s", traceback.format_exc())
         return jsonify({'error': 'Internal Server Error'}), 500
 
-@app.route('/api/clustermigration', methods=['GET'])
+@migration_bp.route('/clustermigration',methods=['GET'])
 def migration():
     registry = request.args.get('registry')
     tag = request.args.get('tag')
@@ -74,7 +83,7 @@ def migration():
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
-@app.route('/api/images/<cluster>', methods=['GET'])
+@imageShow_bp.route('/images/<cluster>', methods=['GET'])
 def get_images(cluster):
     try:
         images=controller.present_images_per_cluster(cluster)
@@ -83,5 +92,43 @@ def get_images(cluster):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@copyimage_bp.route('/copyimage', methods=['GET'])
+def copy_images():
+
+    # Extract query parameters from the incoming GET request
+    registry=request.args.get('new_registry')
+    tag=request.args.get('tag')
+    username=request.args.get('target_username')
+    password=request.args.get('target_password')
+    images = request.args.getlist('images')
+
+    # Creating a database file path relative to the base directory
+    db_name = os.path.join(base_dir, '../../../image_data.db')
+
+     # Initialize the ImageController with the path to the database
+    controller=ImageController(db_name)
+    try:
+
+        # Call the copy_images method
+        controller.copy_images(images,registry,tag,username,password)
+
+          # Return a success message in JSON format if the operation was successful (200) or not (500)
+        return jsonify({'message': 'Images copied successfully!'}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+ 
+
+def create_app():
+    app = Flask(__name__)
+    CORS(app,resources={r"/api/*": {"origins": "*"}})
+    app.register_blueprint(cluster_bp)
+    app.register_blueprint(postReq_bp)
+    app.register_blueprint(imageShow_bp)
+    app.register_blueprint(getStatRes_bp)
+    app.register_blueprint(copyimage_bp)
+    app.register_blueprint(migration_bp)
+    return app
+
 if __name__ == '__main__':
+    app = create_app()
     app.run(debug=True)
