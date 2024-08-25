@@ -65,7 +65,7 @@ jobs:
 
       - name: Run test cluster mirgation
         run: |
-          pytest test_cluster_mirgation.py
+          pytest test_cluster_migration.py
           echo "✅ Copy images test was completed successfully!"
           # exit_code=$?
           # if [ $exit_code -eq "0" ]; then
