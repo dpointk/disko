@@ -16,6 +16,7 @@ export function ClusterMigrationForm({ isOpen, onClose }: ClusterMigrationFormPr
   });
 
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [statusType, setStatusType] = useState<'success' | 'error' | null>(null); // Added state for status type
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,13 +46,15 @@ export function ClusterMigrationForm({ isOpen, onClose }: ClusterMigrationFormPr
         });
 
         if (response.ok) {
-            const result = await response.json();
             setStatusMessage('Success: Image migrated and Helm chart updated.');
+            setStatusType('success');
         } else {
             setStatusMessage(`Error: ${response.statusText}`);
+            setStatusType('error');
         }
     } catch (error) {
         setStatusMessage(`Network Error: ${error}`);
+        setStatusType('error');
     }
   };
 
@@ -61,63 +64,81 @@ export function ClusterMigrationForm({ isOpen, onClose }: ClusterMigrationFormPr
     <div style={styles.overlay}>
       <div style={styles.modal}>
         <button onClick={onClose} style={styles.closeButton}>X</button>
-        <h1>Input Form</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="registry">Registry:</label>
-            <input
-              type="text"
-              id="registry"
-              name="registry"
-              value={formData.registry}
-              onChange={handleChange}
-            />
+        <h1>Cluster Migration</h1>
+        <form onSubmit={handleSubmit} className="form-container">
+          <div className="form-body">
+            <div>
+              <label htmlFor="registry">Registry:</label>
+              <input
+                type="text"
+                id="registry"
+                name="registry"
+                value={formData.registry}
+                onChange={handleChange}
+                placeholder="Enter registry URL"
+                style={styles.input}
+              />
+            </div>
+            <div>
+              <label htmlFor="tag">Tag:</label>
+              <input
+                type="text"
+                id="tag"
+                name="tag"
+                value={formData.tag}
+                onChange={handleChange}
+                placeholder="Enter image tag"
+                style={styles.input}
+              />
+            </div>
+            <div>
+              <label htmlFor="username">Username:</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="Enter your username"
+                style={styles.input}
+              />
+            </div>
+            <div>
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                style={styles.input}
+              />
+            </div>
+            <div>
+              <label htmlFor="helm_chart_path">Helm Chart Path:</label>
+              <input
+                type="text"
+                id="helm_chart_path"
+                name="helm_chart_path"
+                onChange={handleChange}
+                style={styles.input}
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="tag">Tag:</label>
-            <input
-              type="text"
-              id="tag"
-              name="tag"
-              value={formData.tag}
-              onChange={handleChange}
-            />
+          <div className="form-footer">
+            <button className="button-small" type="submit">Submit</button>
           </div>
-          <div>
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="helm_chart_path">Helm Chart Path:</label>
-            <input
-              type="text"
-              id="helm_chart_path"
-              name="helm_chart_path"
-              value={formData.helm_chart_path}
-              onChange={handleChange}
-            />
-          </div>
-          <button className="button-small" type="submit">Submit</button>
         </form>
         {statusMessage && (
-          <div style={styles.statusMessage}>
+          <div style={{ ...styles.statusMessage, backgroundColor: statusType === 'success' ? 'lightgreen' : 'salmon' }}>
             {statusMessage}
+            <button
+              style={styles.closeStatusButton}
+              onClick={() => setStatusMessage(null)}
+            >
+              X
+            </button>
           </div>
         )}
       </div>
@@ -125,7 +146,7 @@ export function ClusterMigrationForm({ isOpen, onClose }: ClusterMigrationFormPr
   );
 }
 
-// Styles for the modal
+// Styles for the modal and form
 const styles = {
   overlay: {
     position: 'fixed' as 'fixed',
@@ -149,24 +170,37 @@ const styles = {
     position: 'absolute' as 'absolute',
     top: '10px',
     right: '10px',
-    backgroundColor: 'red',
-    color: 'white',
+    backgroundColor: 'transparent',
+    color: 'black',
     border: 'none',
-    borderRadius: '50%',
-    width: '30px',
-    height: '30px',
+    fontSize: '18px',
+    fontWeight: 'bold',
     cursor: 'pointer',
-    display: 'flex' as 'flex',
-    justifyContent: 'center' as 'center',
-    alignItems: 'center' as 'center',
+  },
+  input: {
+    width: '100%',
+    padding: '10px',
+    marginBottom: '15px',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
   },
   statusMessage: {
     marginTop: '20px',
     padding: '10px',
     borderRadius: '5px',
-    backgroundColor: '#f0f0f0',
     color: '#333',
+    position: 'relative' as 'relative',
   },
+  closeStatusButton: {
+    position: 'absolute' as 'absolute',
+    top: '10px',
+    right: '10px',
+    backgroundColor: 'transparent',
+    color: 'black',
+    border: 'none',
+    fontSize: '16px',
+    cursor: 'pointer',
+  }
 };
 
 export default function ClusterMigration() {
@@ -184,7 +218,7 @@ export default function ClusterMigration() {
       >
         Open Cluster Migration Form
       </button>
-      
+
       {/* Modal Component */}
       <ClusterMigrationForm isOpen={isModalOpen} onClose={closeModal} />
     </div>
