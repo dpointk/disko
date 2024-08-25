@@ -7,6 +7,14 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Disko",
   description: "Disko-Web",
+  icons: {
+    icon: [
+      {
+        url: "/public/assets/favicon.ico",
+        href: "/public/assets/favicon.ico",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
