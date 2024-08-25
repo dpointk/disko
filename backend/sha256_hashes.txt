@@ -69,3 +69,7 @@ diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a
 diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
 diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
 diskoproject/repo_1.0:3.8-slim-bullseye - SHA256: 66e480a47a8434218c8d7d8ceb636a908bce3b7ef0af725e677a872cd9ae7cb2
+registry.k8s.io/etcd:3.5.4-0 - SHA256: 3e4375bfbcdd49b7768e58c5a32bb5be0a0dd44ee1ac78304570e28078a6a029
+registry.k8s.io/etcd:3.5.4-0 - SHA256: 3e4375bfbcdd49b7768e58c5a32bb5be0a0dd44ee1ac78304570e28078a6a029
+registry.k8s.io/etcd:3.5.4-0 - SHA256: 3e4375bfbcdd49b7768e58c5a32bb5be0a0dd44ee1ac78304570e28078a6a029
+registry.k8s.io/etcd:3.5.4-0 - SHA256: 3e4375bfbcdd49b7768e58c5a32bb5be0a0dd44ee1ac78304570e28078a6a029
