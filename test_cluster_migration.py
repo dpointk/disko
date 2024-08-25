@@ -5,10 +5,10 @@ import docker
 docker_client = docker.from_env()
 
 # Create db from cluster
-create_db = ImageCollector().collect_images("kind-cluster1")
+# create_db = ImageCollector().collect_images("kind-cluster1")
 
 # Import image_controller.py to use any function on my db file
-ctl1 = ImageController("image_data.db")
+ctl1 = ImageController("")
 
 password = os.getenv("DOCKERHUB_PASSWORD")
 ctl1.cluster_migration("ygalidan/test2", "1", "ygalidan", password, "apphelm")
