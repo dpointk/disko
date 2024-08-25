@@ -5,7 +5,6 @@ import traceback
 from flask import Flask, jsonify, request
 from src.disko.image_collector import ImageCollector
 from src.disko.image_management.image_controller import ImageController
-from src.disko.sqlite import SQLiteCRUD
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -16,10 +15,11 @@ def get_image_controller():
     db_name = os.path.join(base_dir, '../../../image_data.db')
     return ImageController(db_name)
 
+controller = get_image_controller()
+
 @app.route('/api/clusters', methods=['GET'])
 def get_clusters():
-    image_controller = get_image_controller()
-    clusters = image_controller.get_kubernetes_clusters()
+    clusters = controller.get_kubernetes_clusters()
     return jsonify(clusters)
 
 @app.route('/api/selected-cluster', methods=['POST'])
@@ -46,9 +46,15 @@ def get_statistics():
         return jsonify({'error': 'No cluster provided'}), 400
     
     try:
-        controller = get_image_controller()
         percentages = controller.calculate_percentages(cluster)
-        results = [{'registry': item[0], 'amount': item[1], 'percentage': item[2]} for item in percentages]
+        results = results = []
+        for item in percentages:
+            results.append({
+                "registry": item[0],
+                "amount": item[1],
+                "percentage": item[2]
+            })
+
         return jsonify({'results': results}), 200
     except Exception as e:
         logging.error("Error in get_statistics: %s", traceback.format_exc())
@@ -56,7 +62,6 @@ def get_statistics():
 
 @app.route('/api/clustermigration', methods=['GET'])
 def migration():
-    controller = get_image_controller()
     registry = request.args.get('registry')
     tag = request.args.get('tag')
     username = request.args.get('username')
@@ -72,9 +77,8 @@ def migration():
 @app.route('/api/images/<cluster>', methods=['GET'])
 def get_images(cluster):
     try:
-        db_name = os.path.join(base_dir, '../../../image_data.db')
-        db = SQLiteCRUD(db_name)
-        images = db.select_all(cluster)
+        images=controller.present_images_per_cluster(cluster)
+
         return jsonify(images), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
