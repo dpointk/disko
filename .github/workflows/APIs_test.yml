@@ -47,8 +47,8 @@ jobs:
     - name: Run Tests
       run: |
         echo "Running API validation tests...🏃🏽"
-        pytest tests/clusters_test.py tests/imageShow_test.py tests/postReq_test.py tests/server_test.py tests/copyImage_test.py tests/migration_test.py --disable-warnings > api-validation-results.txt || exit_code=$?
-        cat api-validation-results.txt
+        pytest tests/ --disable-warnings > api_test.py || exit_code=$?
+        cat api_test.py
         if [ $exit_code -ne 0 ]; then
           echo "Tests failed! Analyzing failed tests...🔍"
           grep -E "^FAIL|^ERROR" api-validation-results.txt
