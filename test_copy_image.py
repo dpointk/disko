@@ -1,5 +1,5 @@
 # ------------------------------------------ Test intro ------------------------------------------ #
-# # The test verifies that the copy_images method in the ImageController class successfully copies a 
+# The test verifies that the copy_images method in the ImageController class successfully copies a 
 # Docker image (python:3.8-slim-bullseye) to a new repository (ygalidan/test1). It then checks 
 # that the copied image can be pulled from Docker Hub, confirming the image was correctly copied 
 # and uploaded.
