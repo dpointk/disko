@@ -3,10 +3,10 @@ name: API Tests
 on:
   push:
     branches:
-      - pre-main
+      - dev    
   pull_request:
     branches:
-      - pre-main
+      - dev
 
 jobs:
   test:
