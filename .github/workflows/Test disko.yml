@@ -43,7 +43,7 @@ jobs:
           cat kind_install.yaml
           kind create cluster --config kind_install.yaml
 
-      - name: Run test copy images
+      - name: Run test test statistic
         run: |
           pytest test_statistic.py
           echo "✅ Statistic test was completed successfully!"
