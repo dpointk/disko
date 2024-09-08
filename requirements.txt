@@ -1,1 +1,7 @@
-kubernetes
+
+docker==7.1.0
+kubernetes==30.1.0
+pytest==8.3.2
+PyYAML==6.0.2
+ruamel.yaml==0.18.6
+ruamel.yaml.clib==0.2.8
