@@ -2,7 +2,7 @@ name: Test disko
 
 on:
   push:
-    branches: [ "ygal" ]
+    branches: [ "main" ]
 
 jobs:
   TestStatistic:
