@@ -67,7 +67,11 @@ class ImageController:
         self.docker_client.login(username=username, password=password)
 
         # Pull the image
+<<<<<<< HEAD
         pulled_image = self.docker_client.images.pull(image, tag)
+=======
+        pulled_image = self.docker_client.images.pull(image,tag)
+>>>>>>> 8a41533 (API complication and image_controller function added)
         if pulled_image:
             print(f"Image {image} pulled successfully")
 
