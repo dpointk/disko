@@ -1,0 +1,8 @@
+app:
+  name: my-app
+  version: 1.0.0
+
+replicaCount: 1
+
+image: ygalidan/test1
+imagePullPolicy: always
