@@ -124,4 +124,4 @@ if __name__ == '__main__':
     app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.register_blueprint(api)
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
