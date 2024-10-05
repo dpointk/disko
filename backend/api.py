@@ -1,9 +1,13 @@
+import sys
 import os
 import logging
 import traceback
 
 from flask import Flask, jsonify, request, Blueprint
 from flask_cors import CORS
+
+parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(parent_dir)
 
 from src.disko.image_collector import ImageCollector
 from src.disko.image_management.image_controller import ImageController
