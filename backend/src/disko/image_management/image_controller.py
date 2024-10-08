@@ -67,15 +67,7 @@ class ImageController:
         self.docker_client.login(username=username, password=password)
 
         # Pull the image
-<<<<<<< HEAD
-        pulled_image = self.docker_client.images.pull(image,tag)
-=======
-<<<<<<<< HEAD:src/disko/image_management/image_controller.py
         pulled_image = self.docker_client.images.pull(image, tag)
-========
-        pulled_image = self.docker_client.images.pull(image,tag)
->>>>>>>> 594fed8 ( Update new Git with the Disko fork):backend/src/disko/image_management/image_controller.py
->>>>>>> 594fed8 ( Update new Git with the Disko fork)
         if pulled_image:
             print(f"Image {image} pulled successfully")
 
